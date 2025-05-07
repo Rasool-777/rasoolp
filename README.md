@@ -1,30 +1,104 @@
-# MERN project in JS
+# Excel Analytics Platform
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+A MERN stack application for uploading Excel files, analyzing data, and generating interactive 2D and 3D charts.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/rasoolkudarimani786-gmailcoms-projects/v0-mern-project-in-js)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/4NNhEtcPFpH)
+## Features
 
-## Overview
+- User & Admin Authentication (JWT based)
+- Excel File Upload and Parsing
+- Data Mapping (dynamic X and Y axes selection)
+- Graph Generation (2D/3D charts)
+- Downloadable Charts (PNG/PDF)
+- Dashboard with upload history
+- Admin features for user management
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+## Prerequisites
+
+- Node.js (v14 or higher)
+- MongoDB (local or Atlas)
+- npm or yarn
+
+## Installation
+
+### Clone the repository
+
+\`\`\`bash
+git clone <repository-url>
+cd excel-analytics-platform
+\`\`\`
+
+### Backend Setup
+
+\`\`\`bash
+cd backend
+npm install
+
+# Create a .env file with the following variables:
+# NODE_ENV=development
+# PORT=5000
+# MONGO_URI=your_mongodb_connection_string
+# JWT_SECRET=your_jwt_secret
+# JWT_EXPIRE=30d
+# FRONTEND_URL=http://localhost:3000
+
+# Create an admin user
+npm run seed:admin
+
+# Create a sample Excel file (optional)
+npm run create:sample
+
+# Start the backend server
+npm run server
+\`\`\`
+
+### Frontend Setup
+
+\`\`\`bash
+cd frontend
+npm install
+
+# Create a .env file with the following variable:
+# REACT_APP_API_URL=http://localhost:5000
+
+# Start the frontend development server
+npm start
+\`\`\`
+
+## Usage
+
+1. Open your browser and navigate to `http://localhost:3000`
+2. Register a new account or login with the admin credentials:
+   - Email: admin@example.com
+   - Password: admin123
+3. Upload an Excel file from the Upload page
+4. Analyze the data and create charts
+5. Download charts as PNG or PDF
+6. View your upload and chart history
+
+## Admin Features
+
+Admin users have access to:
+- User management
+- System statistics
+- Storage usage monitoring
 
 ## Deployment
 
-Your project is live at:
+### Backend Deployment
 
-**[https://vercel.com/rasoolkudarimani786-gmailcoms-projects/v0-mern-project-in-js](https://vercel.com/rasoolkudarimani786-gmailcoms-projects/v0-mern-project-in-js)**
+The backend can be deployed to platforms like:
+- Vercel
+- Render
+- Heroku
+- Railway
 
-## Build your app
+### Frontend Deployment
 
-Continue building your app on:
+The frontend can be deployed to platforms like:
+- Vercel
+- Netlify
+- GitHub Pages
 
-**[https://v0.dev/chat/projects/4NNhEtcPFpH](https://v0.dev/chat/projects/4NNhEtcPFpH)**
+## License
 
-## How It Works
-
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+MIT

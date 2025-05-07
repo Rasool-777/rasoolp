@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
-import { API_URL } from "../../utils/constants"
+import api from "../../utils/api"
+import toast from "react-hot-toast"
 
 const initialState = {
   charts: [],
@@ -14,17 +14,12 @@ const initialState = {
 // Create chart
 export const createChart = createAsyncThunk("charts/create", async (chartData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-
-    const response = await axios.post(`${API_URL}/api/charts`, chartData, config)
+    const response = await api.post("/api/charts", chartData)
+    toast.success("Chart saved successfully!")
     return response.data
   } catch (error) {
     const message = error.response?.data?.message || error.message || error.toString()
+    toast.error(message)
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -32,17 +27,11 @@ export const createChart = createAsyncThunk("charts/create", async (chartData, t
 // Get user charts
 export const getUserCharts = createAsyncThunk("charts/getUserCharts", async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-
-    const response = await axios.get(`${API_URL}/api/charts`, config)
+    const response = await api.get("/api/charts")
     return response.data
   } catch (error) {
     const message = error.response?.data?.message || error.message || error.toString()
+    toast.error(message)
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -50,17 +39,11 @@ export const getUserCharts = createAsyncThunk("charts/getUserCharts", async (_, 
 // Get chart by ID
 export const getChartById = createAsyncThunk("charts/getChartById", async (chartId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-
-    const response = await axios.get(`${API_URL}/api/charts/${chartId}`, config)
+    const response = await api.get(`/api/charts/${chartId}`)
     return response.data
   } catch (error) {
     const message = error.response?.data?.message || error.message || error.toString()
+    toast.error(message)
     return thunkAPI.rejectWithValue(message)
   }
 })

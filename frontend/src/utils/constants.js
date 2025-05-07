@@ -1,3 +1,4 @@
+// Use the environment variable or default to localhost in development
 export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"
 
 export const CHART_TYPES = {

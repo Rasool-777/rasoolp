@@ -1,13 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import axios from "axios"
-import { API_URL } from "../utils/constants"
+import { useSelector } from "react-redux"
+import api from "../utils/api"
 import toast from "react-hot-toast"
 
 const AdminDashboard = () => {
-  const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
 
   const [users, setUsers] = useState([])
@@ -22,17 +20,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const token = user.token
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-
-        const [usersRes, statsRes] = await Promise.all([
-          axios.get(`${API_URL}/api/admin/users`, config),
-          axios.get(`${API_URL}/api/admin/stats`, config),
-        ])
+        const [usersRes, statsRes] = await Promise.all([api.get("/api/admin/users"), api.get("/api/admin/stats")])
 
         setUsers(usersRes.data)
         setStats(statsRes.data)
@@ -45,7 +33,7 @@ const AdminDashboard = () => {
     }
 
     fetchAdminData()
-  }, [user])
+  }, [])
 
   const formatBytes = (bytes) => {
     if (bytes === 0) return "0 Bytes"

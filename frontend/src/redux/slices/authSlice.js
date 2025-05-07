@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
-import { API_URL } from "../../utils/constants"
+import api from "../../utils/api"
+import toast from "react-hot-toast"
 
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem("user"))
@@ -16,13 +16,15 @@ const initialState = {
 // Register user
 export const register = createAsyncThunk("auth/register", async (userData, thunkAPI) => {
   try {
-    const response = await axios.post(`${API_URL}/api/users/register`, userData)
+    const response = await api.post("/api/users/register", userData)
     if (response.data) {
       localStorage.setItem("user", JSON.stringify(response.data))
+      toast.success("Registration successful!")
     }
     return response.data
   } catch (error) {
     const message = error.response?.data?.message || error.message || error.toString()
+    toast.error(message)
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -30,13 +32,15 @@ export const register = createAsyncThunk("auth/register", async (userData, thunk
 // Login user
 export const login = createAsyncThunk("auth/login", async (userData, thunkAPI) => {
   try {
-    const response = await axios.post(`${API_URL}/api/users/login`, userData)
+    const response = await api.post("/api/users/login", userData)
     if (response.data) {
       localStorage.setItem("user", JSON.stringify(response.data))
+      toast.success("Login successful!")
     }
     return response.data
   } catch (error) {
     const message = error.response?.data?.message || error.message || error.toString()
+    toast.error(message)
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -44,6 +48,7 @@ export const login = createAsyncThunk("auth/login", async (userData, thunkAPI) =
 // Logout user
 export const logout = createAsyncThunk("auth/logout", async () => {
   localStorage.removeItem("user")
+  toast.success("Logged out successfully")
 })
 
 export const authSlice = createSlice({

@@ -4,6 +4,7 @@ const cors = require("cors")
 const colors = require("colors")
 const morgan = require("morgan")
 const path = require("path")
+const fs = require("fs")
 const connectDB = require("./config/db")
 const { errorHandler } = require("./middleware/errorMiddleware")
 
@@ -21,8 +22,19 @@ const adminRoutes = require("./routes/adminRoutes")
 
 const app = express()
 
+// Create uploads directory if it doesn't exist
+const uploadsDir = path.join(__dirname, "uploads")
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true })
+}
+
 // Middleware
-app.use(cors())
+app.use(
+  cors({
+    origin: process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : "http://localhost:3000",
+    credentials: true,
+  }),
+)
 app.use(express.json())
 
 // Dev logging middleware
@@ -38,6 +50,11 @@ app.use("/api/users", userRoutes)
 app.use("/api/files", fileRoutes)
 app.use("/api/charts", chartRoutes)
 app.use("/api/admin", adminRoutes)
+
+// Basic route for testing
+app.get("/", (req, res) => {
+  res.json({ message: "API is running..." })
+})
 
 // Error handler
 app.use(errorHandler)

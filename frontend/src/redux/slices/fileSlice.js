@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
-import { API_URL } from "../../utils/constants"
+import api from "../../utils/api"
+import toast from "react-hot-toast"
 
 const initialState = {
   files: [],
@@ -16,18 +16,16 @@ const initialState = {
 // Upload file
 export const uploadFile = createAsyncThunk("files/upload", async (fileData, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
-    const config = {
+    const response = await api.post("/api/files/upload", fileData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
       },
-    }
-
-    const response = await axios.post(`${API_URL}/api/files/upload`, fileData, config)
+    })
+    toast.success("File uploaded successfully!")
     return response.data
   } catch (error) {
     const message = error.response?.data?.message || error.message || error.toString()
+    toast.error(message)
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -35,17 +33,11 @@ export const uploadFile = createAsyncThunk("files/upload", async (fileData, thun
 // Get user files
 export const getUserFiles = createAsyncThunk("files/getUserFiles", async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-
-    const response = await axios.get(`${API_URL}/api/files`, config)
+    const response = await api.get("/api/files")
     return response.data
   } catch (error) {
     const message = error.response?.data?.message || error.message || error.toString()
+    toast.error(message)
     return thunkAPI.rejectWithValue(message)
   }
 })
@@ -53,17 +45,11 @@ export const getUserFiles = createAsyncThunk("files/getUserFiles", async (_, thu
 // Get file by ID
 export const getFileById = createAsyncThunk("files/getFileById", async (fileId, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth.user.token
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-
-    const response = await axios.get(`${API_URL}/api/files/${fileId}`, config)
+    const response = await api.get(`/api/files/${fileId}`)
     return response.data
   } catch (error) {
     const message = error.response?.data?.message || error.message || error.toString()
+    toast.error(message)
     return thunkAPI.rejectWithValue(message)
   }
 })

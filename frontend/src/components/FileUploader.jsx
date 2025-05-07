@@ -41,11 +41,11 @@ const FileUploader = () => {
 
     try {
       await dispatch(uploadFile(formData)).unwrap()
-      toast.success("File uploaded successfully")
       setFile(null)
       setFileName("")
     } catch (error) {
-      toast.error(error || "Error uploading file")
+      console.error("Upload error:", error)
+      // Toast error is handled in the thunk
     } finally {
       setIsUploading(false)
     }
